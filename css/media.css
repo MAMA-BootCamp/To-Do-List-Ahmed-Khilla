@@ -1,0 +1,38 @@
+@media (min-width: 426px) and (max-width: 768px) {
+  .user-list {
+    width: 65%;
+  }
+  .input-container {
+    width: calc(65% - 8px);
+  }
+  header h2 {
+    font-size: 3rem;
+  }
+  .list-box {
+    font-size: 1.8rem;
+  }
+  .right-content {
+    font-size: 2.2rem;
+  }
+}
+@media (min-width: 769px) {
+  .user-list {
+    width: 55%;
+  }
+  .input-container {
+    width: calc(55% - 8px);
+  }
+  header h2 {
+    font-size: 3.6rem;
+  }
+  .list-box {
+    font-size: 1.8rem;
+  }
+  .left-content {
+    flex-basis: 80%;
+  }
+  .right-content {
+    font-size: 2.2rem;
+    flex-basis: 15%;
+  }
+}

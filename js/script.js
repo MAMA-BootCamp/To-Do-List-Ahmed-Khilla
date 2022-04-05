@@ -117,7 +117,7 @@ function getElementOnLoad(e) {
   arr.forEach(e => {
     createListElements(e.targetValue)
 
-    //     //! ===remove Button inside onLoad Function ====
+    //! ===remove Button inside onLoad Function ====
     let remove = document.querySelectorAll('.remove')
     for (let i = 0; i < remove.length; i++) {
       remove[i].addEventListener('click', removeBtnFunction)
@@ -134,36 +134,43 @@ function getElementOnLoad(e) {
       saveToLocalStorage()
     }
     //! ===== Edit button Function  on Load =====
-    // let edit = document.querySelectorAll('.edit')
-    // for (let i = 0; i < edit.length; i++) {
-    //   edit[i].addEventListener('click', editBtnFunction)
-    // }
-    // function editBtnFunction(e) {
-    //   let editTarget = e.target.parentElement.firstElementChild
-    //   let editParent = e.target.parentElement
-    //   let saveBtn = document.createElement('button')
-    //   editParent.appendChild(saveBtn)
-    //   saveBtn.textContent = 'save'
 
-    //   arr = JSON.parse(localStorage.getItem('key'))
-    //   for (let i = 0; i < arr.length; i++) {
-    //     if (arr[i].targetValue === editTarget.textContent) {
-    //       arr.splice(i, 1)
-    //     }
-    //   }
-    //   editTarget.setAttribute('contenteditable', 'true')
-    //   saveToLocalStorage()
+    let edit = document.querySelectorAll('.edit')
+    for (let i = 0; i < edit.length; i++) {
+      edit[i].addEventListener('click', editBtnFunction)
+    }
+    function editBtnFunction(e) {
+      let editTarget = e.target.parentElement.firstElementChild
+      arr = JSON.parse(localStorage.getItem('key'))
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].targetValue === editTarget.textContent) {
+          arr.splice(i, 1)
+        }
+      }
+      saveToLocalStorage()
+      editTarget.setAttribute('contenteditable', 'true')
 
-    //   //! ===== save button Function on Load======
-    //   saveBtn.addEventListener('click', saveBtnFunction)
-    //   function saveBtnFunction(e) {
-    //     editTarget.setAttribute('contenteditable', 'false')
-    //     let editText = e.target.parentElement.firstElementChild.textContent
-    //     let data = {}
-    //     data.targetValue = editText
-    //     arr.push(data)
-    //     saveToLocalStorage()
-    //   }
-    // }
+      //! ===== save button Function on Load======
+      let saveBtn = e.target.nextElementSibling
+      // console.log(saveBtn)
+      saveBtn.addEventListener('click', saveBtnFunction)
+      function saveBtnFunction(e) {
+        arr = JSON.parse(localStorage.getItem('key'))
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].targetValue === editTarget.textContent) {
+            arr.splice(i, 1)
+          }
+        }
+        saveToLocalStorage()
+        let saveTarget = e.target.parentElement.firstElementChild
+        // console.log()
+        saveTarget.setAttribute('contenteditable', 'false')
+        let data = {}
+        data.targetValue = saveTarget.textContent
+        arr.push(data)
+        saveToLocalStorage()
+      }
+    }
+
   }) // end of forEach
 }
