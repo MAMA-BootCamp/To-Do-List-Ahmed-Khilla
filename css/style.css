@@ -1,8 +1,112 @@
 html {
-  font-size: 16px;
+  font-size: 10px;
 }
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #b8bac6;
+}
+
+header {
+  padding: 32px 16px 16px 16px;
+}
+.icon-box {
+  margin-bottom: 16px;
+}
+.icon-box i {
+  font-size: 2.4rem;
+  display: block;
+}
+header h2 {
+  font-family: "Kaushan Script", cursive;
+  text-align: center;
+  font-size: 2.8rem;
+  margin-bottom: 16px;
+}
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 16px auto 40px auto;
+  width: calc(88% - 8px);
+}
+#user-input {
+  flex-basis: 90%;
+  /* height: 40px; */
+  border-radius: 16px;
+  outline: none;
+  border: none;
+  font-size: 1.6rem;
+  padding: 16px 8px 16px 32px;
+}
+.input-container i {
+  font-size: 2rem;
+  font-weight: 600;
+  flex-basis: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  /* height: 40px; */
+  border-radius: 16px;
+  margin-left: 8px;
+  padding: 14px 10px;
+}
+.user-list {
+  padding: 16px 0px 16px 0px;
+  width: 90%;
+  height: 500px;
+  background: #e1e2e7;
+  margin: 16px auto 0px auto;
+  border-radius: 14px;
+  list-style: none;
+  overflow-y: scroll;
+}
+.list-box {
+  width: 90%;
+  margin: 0px auto 16px auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 1.6rem;
+}
+.list-box:last-child {
+  margin-bottom: 0px;
+}
+.left-content {
+  flex-basis: 65%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#check {
+  flex-basis: 5%;
+}
+.left-content li {
+  flex-basis: 95%;
+}
+.right-content {
+  flex-basis: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.8rem;
+}
+.right-content i:first-child {
+  color: #276c27;
+}
+.right-content i:nth-child(2) {
+  color: #5e5ebb;
+}
+.right-content i:last-child {
+  color: #c67272ed;
 }
