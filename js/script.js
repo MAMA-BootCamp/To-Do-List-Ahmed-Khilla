@@ -1,176 +1,189 @@
-//! ======= Declaration =======
-const input = document.querySelector('.user-input');
-const addBtn = document.querySelector('.add-btn')
-const listContainer = document.querySelector('.list-container')
-let arr = [];
+//! ========= Declaration ==========
+const userInput = document.querySelector('#user-input');
+const addBtn = document.querySelector('.add-btn');
+const userList = document.querySelector('.user-list');
+let tasksArray = [];
+// console.log(userInput, addBtn, userList)
 
 //! ======= create list card(Div) =======
-function createListElements(textInput) {
-  const doElement = document.createElement('div')
-  listContainer.appendChild(doElement)
-  doElement.classList.add('card')
+function createUserTaskList(x) {
+  const listBox = document.createElement('section');
+  const leftContent = document.createElement('div');
+  const checkBox = document.createElement('input');
+  const taskText = document.createElement('li');
+  const rightContent = document.createElement('div');
+  const saveIcon = document.createElement('i');
+  const editIcon = document.createElement('i');
+  const removeIcon = document.createElement('i');
 
-  const li = document.createElement('li');
-  doElement.appendChild(li)
-  li.textContent = `${textInput}`
+  //? appended childs
+  userList.appendChild(listBox);
+  listBox.appendChild(leftContent);
+  leftContent.appendChild(checkBox)
+  leftContent.appendChild(taskText);
+  taskText.textContent = `${x}`
+  listBox.appendChild(rightContent);
+  rightContent.appendChild(saveIcon);
+  rightContent.appendChild(editIcon);
+  rightContent.appendChild(removeIcon);
 
-  const removeButton = document.createElement('button');
-  doElement.appendChild(removeButton);
-  removeButton.textContent = 'remove'
-  removeButton.classList.add('remove')
-
-  const editButton = document.createElement('button');
-  doElement.appendChild(editButton)
-  editButton.textContent = 'Edit'
-  editButton.classList.add('edit')
-
-  const saveBtn = document.createElement('button')
-  doElement.appendChild(saveBtn)
-  saveBtn.textContent = 'Save'
-  saveBtn.classList.add('save')
+  //? add classes to created Elements
+  listBox.classList.add('list-box')
+  leftContent.classList.add('left-content');
+  checkBox.setAttribute('id', 'check');
+  checkBox.setAttribute('type', 'checkbox')
+  rightContent.classList.add('right-content');
+  saveIcon.classList.add('ri-save-fill');
+  editIcon.classList.add('ri-pencil-fill');
+  removeIcon.classList.add('ri-delete-bin-7-fill');
 }
 
-//! ======= Add Button Function =======
+//! ======== Add Button Function =======
 addBtn.addEventListener('click', addBtnFunction)
 function addBtnFunction(e) {
-  if (input.value === '') {
+  if (userInput.value === '') {
     return;
   }
-  createListElements(input.value)
+  createUserTaskList(userInput.value)
   let targetValue = e.target.previousElementSibling.value
   let data = {}
   data.targetValue = targetValue
-  arr.push(data)
+  tasksArray.push(data)
   saveToLocalStorage()
 
   //! ==== remove Button Function =====
-  let remove = document.querySelectorAll('.remove')
-  for (let i = 0; i < remove.length; i++) {
-    remove[i].addEventListener('click', removeBtnFunction)
+  let removeBtn = document.querySelectorAll('.ri-delete-bin-7-fill')
+  for (let i = 0; i < removeBtn.length; i++) {
+    removeBtn[i].addEventListener('click', removeBtnFunction)
   }
   function removeBtnFunction(e) {
-    let removeTarget = e.target.parentElement;
-    let removeText = e.target.previousElementSibling.textContent
-    removeTarget.remove()
-    arr = JSON.parse(localStorage.getItem('key'))
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].targetValue === removeText) {
-        arr.splice(i, 1)
-        console.log(arr)
+    let taskParent = e.target.parentElement.parentElement;
+    let removeText = e.target.parentElement.previousElementSibling.lastElementChild.textContent
+    taskParent.remove()
+    tasksArray = JSON.parse(localStorage.getItem('key'))
+    for (let i = 0; i < tasksArray.length; i++) {
+      if (tasksArray[i].targetValue === removeText) {
+        tasksArray.splice(i, 1)
       }
     }
     saveToLocalStorage()
-  }
+  } // end of remove function
 
   //! ===== Edit button Function =====
-  let edit = document.querySelectorAll('.edit')
-  for (let i = 0; i < edit.length; i++) {
-    edit[i].addEventListener('click', editBtnFunction)
+  let editBtn = document.querySelectorAll('.ri-pencil-fill')
+  for (let i = 0; i < editBtn.length; i++) {
+    editBtn[i].addEventListener('click', editBtnFunction)
   }
   function editBtnFunction(e) {
-    let editTarget = e.target.parentElement.firstElementChild
-    arr = JSON.parse(localStorage.getItem('key'))
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].targetValue === editTarget.textContent) {
-        arr.splice(i, 1)
+    let editText = e.target.parentElement.previousElementSibling.lastElementChild
+    tasksArray = JSON.parse(localStorage.getItem('key'))
+    for (let i = 0; i < tasksArray.length; i++) {
+      if (tasksArray[i].targetValue === editText.textContent) {
+        tasksArray.splice(i, 1)
       }
     }
     saveToLocalStorage()
-    editTarget.setAttribute('contenteditable', 'true')
+    editText.setAttribute('contenteditable', 'true')
+  } // end of edit function
 
-    //! ===== save button Function ======
-    let saveBtn = e.target.nextElementSibling
-    // console.log(saveBtn)
-    saveBtn.addEventListener('click', saveBtnFunction)
-    function saveBtnFunction(e) {
-      arr = JSON.parse(localStorage.getItem('key'))
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].targetValue === editTarget.textContent) {
-          arr.splice(i, 1)
-        }
-      }
-      saveToLocalStorage()
-      let saveTarget = e.target.parentElement.firstElementChild
-      // console.log()
-      saveTarget.setAttribute('contenteditable', 'false')
-      let data = {}
-      data.targetValue = saveTarget.textContent
-      arr.push(data)
-      saveToLocalStorage()
-    }
+  //! ===== save button Function ======
+  let saveBtn = document.querySelectorAll('.ri-save-fill')
+  console.log(saveBtn)
+  for (let i = 0; i < editBtn.length; i++) {
+    saveBtn[i].addEventListener('click', saveBtnFunction)
   }
-  input.value = '';
-} // End of add event Listener (add Button)
+  function saveBtnFunction(e) {
+    let saveTarget = e.target.parentElement.previousElementSibling.lastElementChild
+    tasksArray = JSON.parse(localStorage.getItem('key'))
+    for (let i = 0; i < tasksArray.length; i++) {
+      if (tasksArray[i].targetValue === saveTarget.textContent) {
+        tasksArray.splice(i, 1)
+      }
+    }
+    saveToLocalStorage()
+    saveTarget.setAttribute('contenteditable', 'false')
+    let data = {}
+    data.targetValue = saveTarget.textContent
+    tasksArray.push(data)
+    saveToLocalStorage()
+  }
+  userInput.value = '';
+} //end of add function
 
 //! ====== Save To Local Storage Function =====
 function saveToLocalStorage() {
-  localStorage.setItem('key', JSON.stringify(arr))
+  localStorage.setItem('key', JSON.stringify(tasksArray))
 }
 
-//! ======= On Load Function ======
-
+//! ====== get from Local Storage Function =====
+// function getFromLocalStorage() {
+//   JSON.parse(localStorage.getItem('key'))
+// }
 document.addEventListener('DOMContentLoaded', getElementOnLoad)
 function getElementOnLoad(e) {
   if (localStorage.getItem('key')) {
-    arr = JSON.parse(localStorage.getItem('key'))
+    tasksArray = JSON.parse(localStorage.getItem('key'));
   }
-  arr.forEach(e => {
-    createListElements(e.targetValue)
-
-    //! ===remove Button inside onLoad Function ====
-    let remove = document.querySelectorAll('.remove')
-    for (let i = 0; i < remove.length; i++) {
-      remove[i].addEventListener('click', removeBtnFunction)
+  tasksArray.forEach(e => {
+    createUserTaskList(e.targetValue);
+    //! ==== remove Button Function =====
+    let removeBtn = document.querySelectorAll('.ri-delete-bin-7-fill')
+    for (let i = 0; i < removeBtn.length; i++) {
+      removeBtn[i].addEventListener('click', removeBtnFunction)
     }
     function removeBtnFunction(e) {
-      let removeTarget = e.target.parentElement;
-      let removeText = e.target.previousElementSibling.textContent
-      removeTarget.remove()
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].targetValue === removeText) {
-          arr.splice(i, 1)
+      let taskParent = e.target.parentElement.parentElement;
+      let removeText = e.target.parentElement.previousElementSibling.lastElementChild.textContent
+      taskParent.remove()
+      tasksArray = JSON.parse(localStorage.getItem('key'))
+      for (let i = 0; i < tasksArray.length; i++) {
+        if (tasksArray[i].targetValue === removeText) {
+          tasksArray.splice(i, 1)
         }
       }
       saveToLocalStorage()
-    }
-    //! ===== Edit button Function  on Load =====
+    } // end of remove function
 
-    let edit = document.querySelectorAll('.edit')
-    for (let i = 0; i < edit.length; i++) {
-      edit[i].addEventListener('click', editBtnFunction)
+    //! ===== Edit button Function =====
+    let editBtn = document.querySelectorAll('.ri-pencil-fill')
+    for (let i = 0; i < editBtn.length; i++) {
+      editBtn[i].addEventListener('click', editBtnFunction)
     }
     function editBtnFunction(e) {
-      let editTarget = e.target.parentElement.firstElementChild
-      arr = JSON.parse(localStorage.getItem('key'))
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].targetValue === editTarget.textContent) {
-          arr.splice(i, 1)
+      let editText = e.target.parentElement.previousElementSibling.lastElementChild
+      tasksArray = JSON.parse(localStorage.getItem('key'))
+      for (let i = 0; i < tasksArray.length; i++) {
+        if (tasksArray[i].targetValue === editText.textContent) {
+          tasksArray.splice(i, 1)
         }
       }
       saveToLocalStorage()
-      editTarget.setAttribute('contenteditable', 'true')
-
-      //! ===== save button Function on Load======
-      let saveBtn = e.target.nextElementSibling
-      // console.log(saveBtn)
-      saveBtn.addEventListener('click', saveBtnFunction)
-      function saveBtnFunction(e) {
-        arr = JSON.parse(localStorage.getItem('key'))
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i].targetValue === editTarget.textContent) {
-            arr.splice(i, 1)
-          }
-        }
-        saveToLocalStorage()
-        let saveTarget = e.target.parentElement.firstElementChild
-        // console.log()
-        saveTarget.setAttribute('contenteditable', 'false')
-        let data = {}
-        data.targetValue = saveTarget.textContent
-        arr.push(data)
-        saveToLocalStorage()
-      }
+      editText.setAttribute('contenteditable', 'true')
+    } // end of edit function
+    //! ===== save button Function ======
+    let saveBtn = document.querySelectorAll('.ri-save-fill')
+    console.log(saveBtn)
+    for (let i = 0; i < editBtn.length; i++) {
+      saveBtn[i].addEventListener('click', saveBtnFunction)
     }
+    function saveBtnFunction(e) {
+      let saveTarget = e.target.parentElement.previousElementSibling.lastElementChild
+      tasksArray = JSON.parse(localStorage.getItem('key'))
+      for (let i = 0; i < tasksArray.length; i++) {
+        if (tasksArray[i].targetValue === saveTarget.textContent) {
+          tasksArray.splice(i, 1)
+        }
+      }
+      saveToLocalStorage()
+      saveTarget.setAttribute('contenteditable', 'false')
+      let data = {}
+      data.targetValue = saveTarget.textContent
+      tasksArray.push(data)
+      saveToLocalStorage()
+    }
+  }) // end of for Each
+} // end of reload function
 
-  }) // end of forEach
-}
+// next Time ill edit the edit btn and save btn in the way to reassign the textcontent instead of using splice method
+// add the light and dark mood
+// add the check function
